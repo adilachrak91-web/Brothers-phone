@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brothers-Phone-Achrak-A | 2026</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <h1>📱 Brothers-Phone-Achrak-A 📱</h1>
+            <div class="header-info">
+                <span id="currentDate"></span>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="tabs-nav">
+            <button class="tab-btn active" data-tab="pos">🛒 نقطة البيع والمرتجعات</button>
+            <button class="tab-btn" data-tab="inventory">📦 إدارة المستودع</button>
+            <button class="tab-btn" data-tab="reports">📊 التقارير والأرشيف</button>
+            <button class="tab-btn" data-tab="debts">💸 الديون والكريدي</button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- POS Tab -->
+            <section id="pos" class="tab-content active">
+                <div class="pos-container">
+                    <!-- Left Panel -->
+                    <div class="pos-left">
+                        <div class="search-box">
+                            <label>🔍 البحث (اسم أو باركود):</label>
+                            <input type="text" id="searchInput" placeholder="أدخل باركود أو اسم المنتج" autofocus>
+                        </div>
+
+                        <div class="adjustments">
+                            <div class="adjustment-item">
+                                <label>خصم (-)</label>
+                                <input type="number" id="discountInput" min="0" value="0">
+                            </div>
+                            <div class="adjustment-item">
+                                <label>زيادة (+)</label>
+                                <input type="number" id="increaseInput" min="0" value="0">
+                            </div>
+                        </div>
+                        <button class="btn btn-secondary" id="applyAdjBtn">تطبيق التعديل ✏️</button>
+
+                        <div class="product-image">
+                            <img id="productImg" src="" alt="صورة المنتج">
+                            <p id="productImgText">🖼️ صورة المنتج</p>
+                        </div>
+
+                        <div class="stock-info">
+                            <p id="stockQty">الكمية المتوفرة: -</p>
+                        </div>
+
+                        <!-- Returns Section -->
+                        <div class="returns-section">
+                            <div class="return-item">
+                                <h4>🔄 مرتجع زبون</h4>
+                                <input type="text" id="returnBarcode" placeholder="باركود" class="return-input">
+                                <input type="number" id="returnAmount" placeholder="المبلغ" class="return-input">
+                                <button class="btn btn-warning" id="processReturnBtn">إرجاع</button>
+                            </div>
+                            <div class="return-item">
+                                <h4>⚠️ تالف / مورد</h4>
+                                <input type="text" id="damagedBarcode" placeholder="باركود" class="return-input">
+                                <button class="btn btn-danger" id="processDamagedBtn">تأكيد</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Panel - Cart -->
+                    <div class="pos-right">
+                        <div class="cart-header">
+                            <h3>🛒 السلة</h3>
+                        </div>
+                        <table class="cart-table">
+                            <thead>
+                                <tr>
+                                    <th>المنتج</th>
+                                    <th>الكمية</th>
+                                    <th>شراء (د)</th>
+                                    <th>بيع (د)</th>
+                                    <th>ربح (د)</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="cartTableBody"></tbody>
+                        </table>
+                        <div class="cart-total">
+                            <span id="cartTotal">0.00 درهم</span>
+                        </div>
+                        <div class="cart-buttons">
+                            <button class="btn btn-success" id="confirmSaleBtn">تأكيد البيع ✅</button>
+                            <button class="btn btn-danger" id="clearCartBtn">حذف 🗑️</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Inventory Tab -->
+            <section id="inventory" class="tab-content">
+                <div class="inventory-container">
+                    <div class="inventory-form">
+                        <h3>إضافة/تعديل منتج</h3>
+                        <div class="form-row">
+                            <input type="text" id="invBarcode" placeholder="الباركود" class="form-input">
+                            <input type="text" id="invName" placeholder="اسم المنتج" class="form-input">
+                            <input type="text" id="invSupplier" placeholder="المورد" class="form-input">
+                        </div>
+                        <div class="form-row">
+                            <input type="number" id="invBuyPrice" placeholder="سعر الشراء" class="form-input">
+                            <input type="number" id="invSellPrice" placeholder="سعر البيع" class="form-input">
+                            <input type="number" id="invQty" placeholder="الكمية" class="form-input">
+                        </div>
+                        <div class="form-row">
+                            <input type="file" id="invImage" accept="image/*" class="form-input">
+                            <button class="btn btn-primary" id="saveProductBtn">💾 حفظ</button>
+                            <button class="btn btn-danger" id="deleteProductBtn">🗑️ حذف</button>
+                        </div>
+                    </div>
+
+                    <div class="search-box">
+                        <input type="text" id="invSearch" placeholder="بحث عن منتج..." class="form-input">
+                    </div>
+
+                    <table class="inventory-table">
+                        <thead>
+                            <tr>
+                                <th>باركود</th>
+                                <th>الاسم</th>
+                                <th>المورد</th>
+                                <th>الكمية</th>
+                                <th>شراء</th>
+                                <th>بيع</th>
+                                <th>رأس المال</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventoryTableBody"></tbody>
+                    </table>
+
+                    <div class="inventory-total">
+                        <p id="totalCapital">رأس المال: 0.00 درهم</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Reports Tab -->
+            <section id="reports" class="tab-content">
+                <div class="reports-container">
+                    <div class="reports-controls">
+                        <div class="control-group">
+                            <label>التاريخ:</label>
+                            <input type="date" id="reportDate" class="form-input">
+                            <button class="btn btn-primary" id="refreshReportBtn">🔍 عرض</button>
+                        </div>
+                        <div class="control-group">
+                            <label>الافتتاحية:</label>
+                            <input type="number" id="openingCash" placeholder="0" class="form-input">
+                            <button class="btn btn-primary" id="saveOpeningBtn">حفظ درهم</button>
+                        </div>
+                        <div class="control-group">
+                            <label>المصروف:</label>
+                            <select id="expenseType" class="form-input">
+                                <option value="personal">شخصي (خصم من الربح)</option>
+                                <option value="invest">استثمار (خصم من المداخيل)</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <input type="text" id="expenseNote" placeholder="وصف المصروف" class="form-input">
+                            <input type="number" id="expenseAmount" placeholder="المبلغ" class="form-input">
+                            <button class="btn btn-warning" id="addExpenseBtn">إضافة مصروف (درهم)</button>
+                        </div>
+                    </div>
+
+                    <div class="reports-stats">
+                        <div class="stat-box">
+                            <span>الافتتاحية: <strong id="statOpening">0</strong></span>
+                        </div>
+                        <div class="stat-box">
+                            <span>المداخيل: <strong id="statIncome">0</strong></span>
+                        </div>
+                        <div class="stat-box">
+                            <span>👤 شخصي: <strong id="statPersonal">0</strong></span>
+                        </div>
+                        <div class="stat-box">
+                            <span>🏗️ استثمار: <strong id="statInvest">0</strong></span>
+                        </div>
+                        <div class="stat-box highlight">
+                            <span>الربح: <strong id="statProfit">0</strong></span>
+                        </div>
+                        <div class="stat-box highlight">
+                            <span>الصندوق: <strong id="statBox">0</strong></span>
+                        </div>
+                    </div>
+
+                    <table class="reports-table">
+                        <thead>
+                            <tr>
+                                <th>الوقت</th>
+                                <th>المنتج</th>
+                                <th>المبلغ</th>
+                                <th>شراء</th>
+                                <th>ربح</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reportsTableBody"></tbody>
+                    </table>
+
+                    <div class="short-items">
+                        <h4>⚠️ السلع الناقصة</h4>
+                        <div id="shortItemsList" class="short-items-list"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Debts Tab -->
+            <section id="debts" class="tab-content">
+                <div class="debts-container">
+                    <div class="debt-form">
+                        <h3>إضافة دين</h3>
+                        <div class="form-row">
+                            <input type="text" id="debtName" placeholder="الاسم" class="form-input">
+                            <input type="text" id="debtBarcode" placeholder="باركود (اختياري)" class="form-input">
+                            <select id="debtType" class="form-input">
+                                <option value="customer">دين على زبون (لنا)</option>
+                                <option value="supplier">دين لمورد (علينا)</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <input type="text" id="debtReason" placeholder="السبب" class="form-input">
+                            <input type="number" id="debtAmount" placeholder="المبلغ" class="form-input">
+                            <button class="btn btn-success" id="addDebtBtn">حفظ ✅</button>
+                        </div>
+                    </div>
+
+                    <div class="debts-tables">
+                        <div class="debts-table-wrapper">
+                            <h4>ديون الموردين</h4>
+                            <table class="debts-table">
+                                <thead>
+                                    <tr>
+                                        <th>الاسم</th>
+                                        <th>السبب</th>
+                                        <th>الأصل</th>
+                                        <th>المدفوع</th>
+                                        <th>المتبقي</th>
+                                        <th>التاريخ</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="supplierDebtsBody"></tbody>
+                            </table>
+                            <div class="debt-total">
+                                <p id="supplierTotal">إجمالي الموردين: 0.00</p>
+                            </div>
+                        </div>
+
+                        <div class="debts-table-wrapper">
+                            <h4>ديون العملاء</h4>
+                            <table class="debts-table">
+                                <thead>
+                                    <tr>
+                                        <th>الاسم</th>
+                                        <th>السبب</th>
+                                        <th>الأصل</th>
+                                        <th>المدفوع</th>
+                                        <th>المتبقي</th>
+                                        <th>التاريخ</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="customerDebtsBody"></tbody>
+                            </table>
+                            <div class="debt-total">
+                                <p id="customerTotal">إجمالي العملاء: 0.00</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
